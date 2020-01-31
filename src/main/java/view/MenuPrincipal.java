@@ -33,6 +33,8 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
+	//Fonction permettant de créer la fenêtre du menu principal
+	@Override
 	public MenuPrincipal() {
 		super("T'Chat IRC (v0.1 alpha) - Menu principal");
 		JFrame content = new JFrame();
@@ -50,6 +52,7 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 	}
 
 	// This function returns the text label of the main menu :
+	@Override
 	private JPanel getContentPanel() {
 
 		// Initialisation of vairables :
@@ -63,12 +66,13 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 	}
 
 	// This function returns the panel for the buttons in the main menu :
+	@Override
 	private JPanel getButtonPanel() {
 		// Initialisation of vairables :
-
 		final JPanel btnLogPanel = new JPanel(new GridLayout(1, 0));
 		final JPanel btnRunPanel = new JPanel(new GridLayout(1, 0));
 		final JPanel btnStopPanel = new JPanel(new GridLayout(1, 0));
+		
 		btnLogPanel.setBorder(new EmptyBorder(20, 250, 0, 250));
 		btnRunPanel.setBorder(new EmptyBorder(20, 250, 0, 250));
 		btnStopPanel.setBorder(new EmptyBorder(20, 250, 0, 250));
@@ -83,7 +87,6 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 		buttonPanel.add(btnStopPanel);
 
 		//Adding all actionListeners for buttons.
-
 		buttonRunServer.setActionCommand("runServer");
 		buttonRunServer.addActionListener(this);
 		
@@ -98,8 +101,8 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 
 	// This function returns the last information about the application e. g. the
 	// last time server ran and on wich port.
+	@Override
 	private JPanel getInformationPanel() {
-
 		final JPanel informationPanel = new JPanel(new GridLayout(1, 1));
 		informationPanel.setBorder(new EmptyBorder(40, 20, 50, 20));
 		
@@ -108,16 +111,14 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 		informationPanel.add(informationTextArea);
 
 		return informationPanel;
-
 	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
 		if(action.equals("runServer")) {
 			if(serverIsLaunched) {
-				JOptionPane.showMessageDialog(null,"Le serveur est déjà lancé !");
-				
+				JOptionPane.showMessageDialog(null,"Le serveur est déjà lancé !")				
 			}
 			else {
 				informationTextArea.setText(">> Lancement du serveur...");
@@ -130,9 +131,6 @@ public class MenuPrincipal extends JFrame implements ActionListener {
 		else if(action.equals("stopServer")) {
 			informationTextArea.setText(">> Arret du serveur...");
 			serverIsLaunched = false;
-		}
-		
-		
+		}		
 	}
-
 }
