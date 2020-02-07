@@ -67,13 +67,13 @@ public class DefaultDAOMessage extends AbstractDAO implements IDAOMessage {
 			st.setString(3, obj.getMessage());
 			st.setDate(4, obj.getDateEnvoie());
 			r = st.executeUpdate();
-			
+
 			rs = st.getGeneratedKeys();
-									
-			if(r > 0 && rs.next()) {
+
+			if (r > 0 && rs.next()) {
 				obj.setId(rs.getInt(1));
 				return obj;
-			}			
+			}
 			throw new DAOException("Error during message insert in the database");
 		} catch (SQLException e) {
 			throw new DAOException("Error during creating message in the database", e);
@@ -84,12 +84,8 @@ public class DefaultDAOMessage extends AbstractDAO implements IDAOMessage {
 
 	@Override
 	public Message update(Message obj) throws DAOException {
-		final String sql = "UPDATE `MESSAGE` "
-				+ "SET `IdUser` = ? ,"
-				+ "`IdCanal` = ? ,"
-				+ "`Message` = ? ,"
-				+ "`DateEnvoie` = ? "
-				+ "WHERE Id = ?";
+		final String sql = "UPDATE `MESSAGE` " + "SET `IdUser` = ? ," + "`IdCanal` = ? ," + "`Message` = ? ,"
+				+ "`DateEnvoie` = ? " + "WHERE Id = ?";
 
 		PreparedStatement st = null;
 		int r;
@@ -101,17 +97,17 @@ public class DefaultDAOMessage extends AbstractDAO implements IDAOMessage {
 			st.setString(3, obj.getMessage());
 			st.setDate(4, obj.getDateEnvoie());
 			r = st.executeUpdate();
-			
-			if(r > 0) {
+
+			if (r > 0) {
 				return obj;
 			}
-			
-			throw new DAOException("Error during message insert in the database");			
+
+			throw new DAOException("Error during message insert in the database");
 		} catch (SQLException e) {
 			throw new DAOException("Error during creating message in the database", e);
 		} finally {
 			DAOUtils.close(st);
-		}	
+		}
 	}
 
 	@Override
@@ -157,9 +153,9 @@ public class DefaultDAOMessage extends AbstractDAO implements IDAOMessage {
 				u.setDateEnvoie(r.getDate("DateEnvoie"));
 
 				usersList.add(u);
-			}			
-			return usersList; 
-			
+			}
+			return usersList;
+
 		} catch (SQLException e) {
 			throw new DAOException("Error during loading message from the database", e);
 		} finally {
@@ -170,7 +166,7 @@ public class DefaultDAOMessage extends AbstractDAO implements IDAOMessage {
 	@Override
 	public Message getMessageByUserAndCanal(int id_User, int id_Canal) throws DAOException {
 		final String sql = "SELECT * FROM `MESSAGE` WHERE `IdUser` = ? AND `IdCanal` = ? ";
-		
+
 		PreparedStatement st = null;
 		ResultSet r = null;
 
@@ -192,6 +188,98 @@ public class DefaultDAOMessage extends AbstractDAO implements IDAOMessage {
 			}
 
 			throw new DAOException("Message not found.");
+		} catch (SQLException e) {
+			throw new DAOException("Error during loading message from the database", e);
+		} finally {
+			DAOUtils.close(r, st);
+		}
+	}
+
+	public List<Message> getMessageByCanal(int id_Canal) throws DAOException {
+		final String sql = "SELECT * FROM `MESSAGE` WHERE `IdCanal` = ? ";
+
+		PreparedStatement st = null;
+		ResultSet r = null;
+
+		try {
+			st = connect.prepareStatement(sql);
+			st.setInt(1, id_Canal);
+			r = st.executeQuery();
+			List<Message> msg = new LinkedList<>();
+
+			if (r.next()) {
+				Message u = new Message();
+				u.setId(r.getInt("Id"));
+				u.setId_User(r.getInt("IdUser"));
+				u.setId_Canal(r.getInt("IdCanal"));
+				u.setMessage(r.getString("Message"));
+				u.setDateEnvoie(r.getDate("DateEnvoie"));
+
+				msg.add(u);
+			}
+
+			return msg;
+
+		} catch (SQLException e) {
+			throw new DAOException("Error during loading message from the database", e);
+		} finally {
+			DAOUtils.close(r, st);
+		}
+	}
+
+	public List<Message> getMessageByCanalNom(String nom_canal) throws DAOException {
+		final String sql = "SELECT MESSAGE.message FROM CANAL, MESSAGE WHERE CANAL.nom = ? LIMIT 5";
+
+		PreparedStatement st = null;
+		ResultSet r = null;
+
+		try {
+			st = connect.prepareStatement(sql);
+			st.setString(1, nom_canal);
+			r = st.executeQuery();
+			List<Message> msg = new LinkedList<>();
+
+			while (r.next()) {
+				Message u = new Message();
+				u.setMessage(r.getString("Message"));
+
+				msg.add(u);
+			}
+
+			return msg;
+
+		} catch (SQLException e) {
+			throw new DAOException("Error during loading message from the database", e);
+		} finally {
+			DAOUtils.close(r, st);
+		}
+	}
+
+	public List<Message> getMessageByUser(int id_User) throws DAOException {
+		final String sql = "SELECT * FROM `MESSAGE` WHERE `IdUser` = ? LIMIT 5";
+
+		PreparedStatement st = null;
+		ResultSet r = null;
+
+		try {
+			st = connect.prepareStatement(sql);
+			st.setInt(1, id_User);
+			r = st.executeQuery();
+			List<Message> msg = new LinkedList<>();
+
+			while(r.next()) {
+				Message u = new Message();
+				u.setId(r.getInt("Id"));
+				u.setId_User(r.getInt("IdUser"));
+				u.setId_Canal(r.getInt("IdCanal"));
+				u.setMessage(r.getString("Message"));
+				u.setDateEnvoie(r.getDate("DateEnvoie"));
+
+				msg.add(u);
+			}
+
+			return msg;
+
 		} catch (SQLException e) {
 			throw new DAOException("Error during loading message from the database", e);
 		} finally {

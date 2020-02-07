@@ -41,7 +41,6 @@ public class DefaultDAOCanal extends AbstractDAO implements IDAOCanal{
 				u.setId(r.getInt("Id"));
 				u.setNom(r.getString("Nom"));
 				u.setDateCreation(r.getDate("DateCreation"));
-				u.setEtat(r.getBoolean("Etat"));
 				return u;
 			}
 
@@ -155,7 +154,7 @@ public class DefaultDAOCanal extends AbstractDAO implements IDAOCanal{
 				u.setId(r.getInt("Id"));
 				u.setNom(r.getString("Nom"));
 				u.setDateCreation(r.getDate("DateCreation"));
-				u.setEtat(r.getBoolean("Etat"));
+
 
 				usersList.add(u);
 			}			

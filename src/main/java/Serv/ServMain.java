@@ -9,6 +9,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import TrameProcess.*;
+import Interface.MenuPrincipal;
 
 public class ServMain {
 	private static final Logger LOG = Logger.getLogger(ServMain.class.getName());
@@ -22,6 +23,8 @@ public class ServMain {
 		try {
 			// Bind server socket on the port 4567
 			server = new ServerSocket(4567);
+			
+			MenuPrincipal test = new MenuPrincipal();
 
 			while (true) {
 				final Socket client = server.accept(); 

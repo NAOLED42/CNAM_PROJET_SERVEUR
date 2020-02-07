@@ -58,11 +58,11 @@ public class DAOFactory {
 		}
 	}
 	
-	public static IDAOUser getDAOUser(Connection c) {
+	public static DefaultDAOUser getDAOUser(Connection c) {
 		return new DefaultDAOUser(c);
 	}
 	
-	public static IDAOMessage getDAOMessage(Connection c) {
+	public static DefaultDAOMessage getDAOMessage(Connection c) {
 		return new DefaultDAOMessage(c);
 	}
 
